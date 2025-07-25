@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>J22&J23.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #c678dd; font-style: italic;}
+.s1 { color: #abb2bf;}
+.s2 { color: #5c6370; font-style: italic;}
+.s3 { color: #98c379;}
+.s4 { color: #d19a66;}
+</style>
+</head>
+<body bgcolor="#282c34">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+J22&J23.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">pandas </span><span class="s0">as </span><span class="s1">pd</span>
+<span class="s0">from </span><span class="s1">sklearn.preprocessing </span><span class="s0">import </span><span class="s1">LabelEncoder, StandardScaler, OneHotEncoder</span>
+
+<span class="s2"># Show Max Rows &amp; Columns</span>
+
+<span class="s1">pd.set_option(</span><span class="s3">&quot;display.max_rows&quot;</span><span class="s1">, </span><span class="s0">None</span><span class="s1">)</span>
+<span class="s1">pd.set_option(</span><span class="s3">&quot;display.max_columns&quot;</span><span class="s1">, </span><span class="s0">None</span><span class="s1">)</span>
+
+<span class="s2"># Load in Dataset</span>
+
+<span class="s1">df1 = pd.read_csv(</span><span class="s3">&quot;patient_data_simple.csv&quot;</span><span class="s1">)</span>
+
+<span class="s1">print(df1)</span>
+
+<span class="s2"># Rows = Horizontal</span>
+<span class="s2"># Columns = Vertical</span>
+
+<span class="s1">print(df1.head())</span>
+
+<span class="s1">print(df1.tail())</span>
+
+<span class="s1">print(df1.info())</span>
+
+<span class="s1">print(</span><span class="s3">&quot;Columns:&quot;</span><span class="s1">, df1.columns.tolist())</span>
+
+<span class="s2"># Summary Statistics (Mean, Mode, Median, Max, Min)</span>
+
+<span class="s1">print(df1[</span><span class="s3">&quot;Age&quot;</span><span class="s1">].mean())</span>
+
+<span class="s1">print(</span><span class="s3">&quot;Average Age:&quot;</span><span class="s1">, df1[</span><span class="s3">&quot;Age&quot;</span><span class="s1">].mean())</span>
+
+<span class="s1">print(</span><span class="s3">&quot;Max Cholesterol:&quot;</span><span class="s1">, df1[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">].max())</span>
+
+<span class="s1">print(</span><span class="s3">&quot;Min Cholesterol:&quot;</span><span class="s1">, df1[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">].min())</span>
+
+<span class="s1">print(</span><span class="s3">&quot;Median Cholesterol:&quot;</span><span class="s1">, df1[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">].median())</span>
+
+<span class="s1">print(df1[</span><span class="s3">&quot;Visits_Last_Year&quot;</span><span class="s1">].mode())</span>
+
+<span class="s2"># Categorizing/Filtering</span>
+
+<span class="s1">smokers = df1[df1[</span><span class="s3">&quot;Smoker&quot;</span><span class="s1">] == </span><span class="s3">&quot;Yes&quot;</span><span class="s1">]</span>
+
+<span class="s1">print(smokers)</span>
+
+<span class="s1">guys = df1[df1[</span><span class="s3">&quot;Gender&quot;</span><span class="s1">] == </span><span class="s3">&quot;Male&quot;</span><span class="s1">]</span>
+
+<span class="s1">print(guys)</span>
+
+<span class="s1">High_Cholesterol = df1[df1[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">] &gt; </span><span class="s4">200</span><span class="s1">]</span>
+<span class="s1">print(High_Cholesterol)</span>
+
+<span class="s2"># Value Counts</span>
+
+<span class="s1">print(df1[</span><span class="s3">&quot;Gender&quot;</span><span class="s1">].value_counts())</span>
+<span class="s1">print(df1[</span><span class="s3">&quot;Smoker&quot;</span><span class="s1">].value_counts())</span>
+
+<span class="s2"># GroupBy</span>
+
+<span class="s1">print(df1.groupby(</span><span class="s3">&quot;Smoker&quot;</span><span class="s1">)[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">].mean())</span>
+
+<span class="s2"># List the T3 Patients with the Highest Cholesterol</span>
+
+<span class="s1">top3 = df1.sort_values(</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">, ascending=</span><span class="s0">False</span><span class="s1">).head(</span><span class="s4">3</span><span class="s1">)</span>
+<span class="s1">print(top3)</span>
+
+<span class="s2"># List the T3 Patients with the Lowest Cholesterol</span>
+
+<span class="s1">top3 = df1.sort_values(</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">, ascending=</span><span class="s0">True</span><span class="s1">).head(</span><span class="s4">3</span><span class="s1">)</span>
+<span class="s1">print(top3)</span>
+
+<span class="s2"># Handle Missing Data</span>
+
+<span class="s1">df_nasty = pd.read_csv(</span><span class="s3">&quot;patient_data_dirty.csv&quot;</span><span class="s1">)</span>
+
+<span class="s1">print(df_nasty)</span>
+
+<span class="s2"># See How Many Missing Values</span>
+
+<span class="s1">print(df_nasty.isnull().sum())</span>
+
+<span class="s2"># Remove Rows with NaN Values</span>
+
+<span class="s1">df_squeaky = df_nasty.dropna()</span>
+
+<span class="s1">print(df_squeaky)</span>
+
+<span class="s2"># OR Fill NaN Values with/median/etc.</span>
+
+<span class="s1">df_nasty[</span><span class="s3">&quot;BMI&quot;</span><span class="s1">] = df_nasty[</span><span class="s3">&quot;BMI&quot;</span><span class="s1">].fillna(df_nasty[</span><span class="s3">&quot;BMI&quot;</span><span class="s1">].mean())</span>
+<span class="s1">print(df_nasty)</span>
+
+<span class="s2"># Type Conversions</span>
+<span class="s2"># Convert Object Column to Int</span>
+
+<span class="s2"># Error doesn't work because of float (NaN) AND string (unknown) values. Have to find a different way to convert.</span>
+<span class="s2">#df_nasty[&quot;Age&quot;] = df_nasty[&quot;Age&quot;].astype(int)</span>
+<span class="s2">#print(df_nasty)</span>
+
+<span class="s2"># Convert Age/Cholesterol Values to Numeric</span>
+
+<span class="s1">df_nasty[</span><span class="s3">&quot;Age&quot;</span><span class="s1">] = pd.to_numeric(df_nasty[</span><span class="s3">&quot;Age&quot;</span><span class="s1">], errors = </span><span class="s3">'coerce'</span><span class="s1">)</span>
+<span class="s1">print(df_nasty)</span>
+
+<span class="s1">df_nasty[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">] = pd.to_numeric(df_nasty[</span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">], errors = </span><span class="s3">'coerce'</span><span class="s1">)</span>
+<span class="s1">print(df_nasty)</span>
+
+<span class="s2"># Fill NaN Values with Mean</span>
+
+<span class="s1">df_nasty[[</span><span class="s3">&quot;Age&quot;</span><span class="s1">, </span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">]] = df_nasty[[</span><span class="s3">&quot;Age&quot;</span><span class="s1">, </span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">]].fillna(df_nasty[[</span><span class="s3">&quot;Age&quot;</span><span class="s1">, </span><span class="s3">&quot;Cholesterol&quot;</span><span class="s1">]].mean())</span>
+<span class="s1">print(df_nasty)</span>
+
+<span class="s2"># Encoding Categorical Variables</span>
+
+<span class="s1">le = LabelEncoder()</span>
+<span class="s1">df_nasty[</span><span class="s3">&quot;Gender&quot;</span><span class="s1">] = le.fit_transform(df_nasty[</span><span class="s3">&quot;Gender&quot;</span><span class="s1">])</span>
+
+<span class="s1">df_nasty[</span><span class="s3">&quot;Smoker&quot;</span><span class="s1">] = le.fit_transform(df_nasty[</span><span class="s3">&quot;Smoker&quot;</span><span class="s1">])</span>
+
+<span class="s2">#df_nasty[&quot;Class&quot;] = le.fit_transform(df_nasty[&quot;Class&quot;])</span>
+<span class="s1">print(df_nasty)</span>
+
+<span class="s2"># Standard Scaler (Used for Logistics Regression, KNN, SVM, Neural Networks, etc.)</span>
+
+<span class="s2">#scaler = StandardScaler()</span>
+<span class="s2">#df_nasty[[&quot;Age&quot;, &quot;Cholesterol&quot;]] = scaler.fit_transform(df_nasty[[&quot;Age&quot;, &quot;Cholesterol&quot;]])</span>
+
+<span class="s1">print(df_nasty)</span>
+
+<span class="s2"># One Hot Encoding</span>
+
+<span class="s1">df_nasty = pd.get_dummies(df_nasty, columns=[</span><span class="s3">'Class'</span><span class="s1">]).astype(int)</span>
+<span class="s1">print(df_nasty)</span></pre>
+</body>
+</html>
