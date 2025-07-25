@@ -1,0 +1,133 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
+
+# Show Max Rows & Columns
+
+pd.set_option("display.max_rows", None)
+pd.set_option("display.max_columns", None)
+
+# Load in Dataset
+
+df1 = pd.read_csv("patient_data_simple.csv")
+
+print(df1)
+
+# Rows = Horizontal
+# Columns = Vertical
+
+print(df1.head())
+
+print(df1.tail())
+
+print(df1.info())
+
+print("Columns:", df1.columns.tolist())
+
+# Summary Statistics (Mean, Mode, Median, Max, Min)
+
+print(df1["Age"].mean())
+
+print("Average Age:", df1["Age"].mean())
+
+print("Max Cholesterol:", df1["Cholesterol"].max())
+
+print("Min Cholesterol:", df1["Cholesterol"].min())
+
+print("Median Cholesterol:", df1["Cholesterol"].median())
+
+print(df1["Visits_Last_Year"].mode())
+
+# Categorizing/Filtering
+
+smokers = df1[df1["Smoker"] == "Yes"]
+
+print(smokers)
+
+guys = df1[df1["Gender"] == "Male"]
+
+print(guys)
+
+High_Cholesterol = df1[df1["Cholesterol"] > 200]
+print(High_Cholesterol)
+
+# Value Counts
+
+print(df1["Gender"].value_counts())
+print(df1["Smoker"].value_counts())
+
+# GroupBy
+
+print(df1.groupby("Smoker")["Cholesterol"].mean())
+
+# List the T3 Patients with the Highest Cholesterol
+
+top3 = df1.sort_values("Cholesterol", ascending=False).head(3)
+print(top3)
+
+# List the T3 Patients with the Lowest Cholesterol
+
+top3 = df1.sort_values("Cholesterol", ascending=True).head(3)
+print(top3)
+
+# Handle Missing Data
+
+df_nasty = pd.read_csv("patient_data_dirty.csv")
+
+print(df_nasty)
+
+# See How Many Missing Values
+
+print(df_nasty.isnull().sum())
+
+# Remove Rows with NaN Values
+
+df_squeaky = df_nasty.dropna()
+
+print(df_squeaky)
+
+# OR Fill NaN Values with/median/etc.
+
+df_nasty["BMI"] = df_nasty["BMI"].fillna(df_nasty["BMI"].mean())
+print(df_nasty)
+
+# Type Conversions
+# Convert Object Column to Int
+
+# Error doesn't work because of float (NaN) AND string (unknown) values. Have to find a different way to convert.
+#df_nasty["Age"] = df_nasty["Age"].astype(int)
+#print(df_nasty)
+
+# Convert Age/Cholesterol Values to Numeric
+
+df_nasty["Age"] = pd.to_numeric(df_nasty["Age"], errors = 'coerce')
+print(df_nasty)
+
+df_nasty["Cholesterol"] = pd.to_numeric(df_nasty["Cholesterol"], errors = 'coerce')
+print(df_nasty)
+
+# Fill NaN Values with Mean
+
+df_nasty[["Age", "Cholesterol"]] = df_nasty[["Age", "Cholesterol"]].fillna(df_nasty[["Age", "Cholesterol"]].mean())
+print(df_nasty)
+
+# Encoding Categorical Variables
+
+le = LabelEncoder()
+df_nasty["Gender"] = le.fit_transform(df_nasty["Gender"])
+
+df_nasty["Smoker"] = le.fit_transform(df_nasty["Smoker"])
+
+#df_nasty["Class"] = le.fit_transform(df_nasty["Class"])
+print(df_nasty)
+
+# Standard Scaler (Used for Logistics Regression, KNN, SVM, Neural Networks, etc.)
+
+#scaler = StandardScaler()
+#df_nasty[["Age", "Cholesterol"]] = scaler.fit_transform(df_nasty[["Age", "Cholesterol"]])
+
+print(df_nasty)
+
+# One Hot Encoding
+
+df_nasty = pd.get_dummies(df_nasty, columns=['Class']).astype(int)
+print(df_nasty)

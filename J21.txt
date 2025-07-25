@@ -1,0 +1,146 @@
+# Print Function
+
+print("Find a scrim")
+
+from operator import floordiv
+
+# Variables
+
+name = "Jefferson" #string
+age = 27 #integer or int
+height = 63.5 #float
+dropped_for_neod = True #boolean
+
+print(name, "is", age, "years old and", height, "inches tall.")
+
+# Operators
+
+a = 12
+b = 3
+
+print("Addition:", a + b)
+print("Subtraction:", a - b)
+print("Division:", a / b)
+print("Multiplication:", a * b)
+print("Exponent:", a ** b)
+("Remainder/Modulus:", a % b)
+
+# Conditional Statements
+
+score = 65
+
+if score >= 70:
+    print("Pass")
+else:
+    print("Fail")
+
+if score >= 90:
+    print("A")
+elif score >= 80:
+    print("B")
+elif score >= 70:
+    print("C")
+elif score >= 60:
+    print("D")
+else:
+    print("Fail")
+
+
+# List Indexing
+
+STRIVE = ["Snow", "Eldo", "Jeff", "Riv", "JDub", "Boja"]
+print(STRIVE)
+
+# Functions
+
+a = 6
+b = 6
+
+def multiply(a, b):
+    return a * b
+
+print(multiply(a, b))
+
+number = 11
+
+def is_even(number):
+    if number % 2 == 0:
+        return "Even"
+    else:
+        return "Odd"
+
+print(is_even(number))
+
+fahrenheit = 87
+def to_celsius(fahrenheit):
+    return(fahrenheit - 32) * 5 / 9
+
+print(to_celsius(fahrenheit))
+
+
+# BMI Calculator
+
+weight = 65
+height = 1.78
+
+def to_bmi(weight, height):
+    bmi = weight / (height * height)
+    return bmi
+
+print(to_bmi(weight, height))
+
+# List Index
+
+STRIVE = ["Snow", "Eldo", "Jeff", "Riv", "JDub", "Boja"]
+print(STRIVE)
+
+# Append to Add
+
+STRIVE.append("Ramey")
+print(STRIVE)
+
+# Pop to Remove
+
+STRIVE.pop(1)
+print(STRIVE)
+
+# For Loop
+
+for names in STRIVE:
+    print("Hello", names)
+
+# Tuples
+
+dimensions = (1920, 1080)
+
+print("Width:", dimensions[1])
+print("Height:", dimensions[0])
+
+# Dictionaries
+
+stats = {
+    "Gamertag": "Snow",
+    "Kills": [48, 24, 32, 48],
+    "Accuracy": 0.32,
+    "Class": "AR"
+}
+
+# Access Values By Key
+
+print("Gamertag:", stats["Gamertag"])
+
+print("Kills:", stats["Kills"][-4])
+
+print("Accuracy:", stats["Accuracy"])
+
+print("Class:", stats["Class"])
+
+# Add a New Key Value Pair
+
+stats["Rank"] = "Iridescent"
+
+# Sets
+
+loadouts = {"Sniper", "AR", "SMG", "LMG", "AR"}
+
+print(loadouts)
